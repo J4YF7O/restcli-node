@@ -1,14 +1,20 @@
 services:
   - docker
 
+stages:
+  - test
+  - publish
+
 jobs:
   include:
     - before_script:
         - docker build -t $IMAGE_TAG .
       script:
-        - docker run --mount source=test/google.http,target=google.http $IMAGE_TAG rest-cli -e "dev" google.http
+        - docker run -v "$(pwd)"/test:/test rest-cli -e "dev" /test/google.http
+      stage: test
     - before_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
       script:
         - docker build -t $IMAGE_TAG .
         - docker push
+      stage: publish
