@@ -10,7 +10,7 @@ jobs:
     - before_script:
         - docker build -t $IMAGE_TAG .
       script:
-        - docker run -v "$(pwd)"/test:/test rest-cli -e "dev" /test/google.http
+        - docker run -v "$(pwd)"/test:/test $IMAGE_TAG rest-cli -e "dev" /test/google.http
       stage: test
     - before_script:
         - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
