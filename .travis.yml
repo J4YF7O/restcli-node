@@ -1,0 +1,14 @@
+services:
+  - docker
+
+jobs:
+  include:
+    - before_script:
+        - docker build -t $IMAGE_TAG .
+      script:
+        - docker run --mount source=test/google.http,target=google.http $IMAGE_TAG rest-cli -e "dev" google.http
+    - before_script:
+        - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      script:
+        - docker build -t $IMAGE_TAG .
+        - docker push

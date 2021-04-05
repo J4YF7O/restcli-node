@@ -1,0 +1,11 @@
+#### # # # # # # # # # # ##
+#     AUTHENTICATION      #
+## # # # # # # # # # # # ##
+GET https://google.com
+Content-Type: application/json
+
+> {%
+client.test("Google response is 301", function() {
+    client.assert(response.status === 301, 'Google is not 301')
+})
+%}
